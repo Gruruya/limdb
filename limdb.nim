@@ -122,7 +122,7 @@ proc initTransaction*[A, B](d: Database[A, B], writeMode = readwrite): Transacti
     raise newException(IOError, "LimDB initTransaction failed: " & $strerror(err))
   when A isnot string:
     if 0 != setCompare(result.txn, result.dbi, cast[ptr CmpFunc](wrapCompare(A))):
-      raise newException(CatchableError, "LimDB could not set compare proc for type" & $A)
+      raise newException(ValueError, "LimDB could not set compare proc for type" & $A)
 
 template initTransaction*[A, B](d: Database[A, B], t: Transaction): Transaction[A, B] =
   ## Expand an open transaction to include another database.
